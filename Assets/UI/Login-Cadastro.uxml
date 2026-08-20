@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Login.uss?fileID=7433441132597879392&amp;guid=f315f1a0ef72b7f4f88274b2c122ad5f&amp;type=3#Login" />
+    <ui:VisualElement name="Container" class="container" style="width: 100%; height: 100%; background-color: rgb(27, 24, 38); align-items: center; justify-content: center;">
+        <ui:VisualElement name="box" style="width: 80%; height: 85%; background-color: rgb(0, 0, 0); border-top-left-radius: 17px; border-top-right-radius: 17px; border-bottom-right-radius: 17px; border-bottom-left-radius: 17px;">
+            <ui:VisualElement name="Titulo" class="game-title">
+                <ui:Label text="Gael Programing" display-tooltip-when-elided="true" name="Label" style="border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
+            </ui:VisualElement>
+            <ui:VisualElement name="VisualElement" class="font-panel">
+                <ui:Label text="Login" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Painel" class="panel">
+                <ui:TextField picking-mode="Ignore" label="Prontuario" value="filler text" text="BI3427028" />
+                <ui:TextField picking-mode="Ignore" label="Senha" value="filler text" text="filler text" password="true" />
+                <ui:Button text="Login" display-tooltip-when-elided="true" class="main-button" />
+                <ui:Button text="Register" display-tooltip-when-elided="true" class="secondary-button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
