@@ -1,4 +1,0 @@
-repository "Progamming Quest 0.1/Progamming Quest 0.1@4673110959549@cloud"
-  path "/"
-    br "/main"
-    co "/main"
