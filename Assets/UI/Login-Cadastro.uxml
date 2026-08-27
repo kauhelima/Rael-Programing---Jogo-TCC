@@ -9,10 +9,10 @@
                 <ui:Label text="Login" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
             </ui:VisualElement>
             <ui:VisualElement name="Painel" class="panel">
-                <ui:TextField picking-mode="Ignore" label="Prontuario" value="filler text" text="BI3427028" />
-                <ui:TextField picking-mode="Ignore" label="Senha" value="filler text" text="filler text" password="true" />
-                <ui:Button text="Login" display-tooltip-when-elided="true" class="main-button" />
-                <ui:Button text="Register" display-tooltip-when-elided="true" class="secondary-button" />
+                <ui:TextField picking-mode="Ignore" label="Prontuario" value="filler text" text="BI3427028" name="prontuarioTextField" />
+                <ui:TextField picking-mode="Ignore" label="Senha" value="filler text" text="filler text" password="true" name="passwordTextField" />
+                <ui:Button text="Login" display-tooltip-when-elided="true" name="loginButton" class="main-button" />
+                <ui:Button text="Register" display-tooltip-when-elided="true" name="registerButton" class="secondary-button" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
