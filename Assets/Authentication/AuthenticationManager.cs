@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
+using Unity.Services.Authentication.PlayerAccounts;
 using Unity.Services.Core;
 using UnityEngine;
 
@@ -10,16 +9,24 @@ public class AuthenticationManager : MonoBehaviour
 {
     public static AuthenticationManager Instance {  get; private set; }
 
+    private bool isInitialized = false;
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
-    // Start is called before the first frame update
     async void Start()
     {
         try
         {
             await UnityServices.InitializeAsync();
+            await InitializeServices();
             SetupEvents();
         }
         catch (Exception e)
@@ -29,7 +36,23 @@ public class AuthenticationManager : MonoBehaviour
 
         Debug.Log($"Unity Services State: {UnityServices.State}");
     }
+    public async Task InitializeServices()
+    {
+        if (isInitialized) return;
 
+        try
+        {
+            await UnityServices.InitializeAsync();
+            SetupEvents();
+            isInitialized = true;
+            Debug.Log("Unity Services inicializado com sucesso!");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Falha ao inicializar Unity Services: " + e.Message);
+            Debug.LogException(e);
+        }
+    }
     public async Task<string> RegisterWithUsernamePasswordAsync(string username, string password)
     {
         try
@@ -84,7 +107,47 @@ public class AuthenticationManager : MonoBehaviour
         }
         return "";
     }
-    // Update is called once per frame
+    public async Task LoginWithGoogleAsync()
+    {
+        // Garante que está inicializado antes de continuar
+        if (!isInitialized)
+        {
+            await InitializeServices();
+        }
+
+        if (!isInitialized)
+        {
+            Debug.LogError("Unity Services não foi inicializado. Não é possível fazer login com Google.");
+            return;
+        }
+
+        try
+        {
+            Debug.Log("Iniciando login com Google...");
+
+            // Abre a tela de login do Player Accounts
+            await PlayerAccountService.Instance.StartSignInAsync();
+
+            // Pega o token e autentica no Authentication Service
+            string accessToken = PlayerAccountService.Instance.AccessToken;
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                Debug.LogError("Access Token vazio após o login.");
+                return;
+            }
+
+            await AuthenticationService.Instance.SignInWithUnityAsync(accessToken);
+
+            Debug.Log("Login com Google realizado com sucesso!");
+            Debug.Log($"Player ID: {AuthenticationService.Instance.PlayerId}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Erro no login com Google:");
+            Debug.LogException(e);
+        }
+    }
     private static void SetupEvents()
     {
         AuthenticationService.Instance.SignedIn += () =>

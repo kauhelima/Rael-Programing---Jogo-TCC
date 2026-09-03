@@ -12,6 +12,7 @@ public class Login_UI : MonoBehaviour
 
     private Button loginButton;
     private Button registerButton;
+    private Button googleButton;
     private TextField userNameField;
     private TextField passwordField;
 
@@ -22,10 +23,13 @@ public class Login_UI : MonoBehaviour
         registerButton = root.Q<Button>("registerButton");
         userNameField = root.Q<TextField>("prontuarioTextField");
         passwordField = root.Q<TextField>("passwordTextField");
+        googleButton = root.Q<Button>("googleButton");
 
         loginButton.clicked += LoginButtonClick;
         registerButton.clicked += RegisterButtonClick;
-    }
+        if (googleButton != null)
+            googleButton.clicked += GoogleButtonClick;
+}
 
     private async void RegisterButtonClick()
     {
@@ -43,5 +47,15 @@ public class Login_UI : MonoBehaviour
             passwordField.value
         );
         Debug.Log(errorText);
+    }
+    private async void GoogleButtonClick()
+    {
+        if (AuthenticationManager.Instance == null)
+        {
+            Debug.LogError("AuthenticationManager não encontrado na cena!");
+            return;
+        }
+
+        await AuthenticationManager.Instance.LoginWithGoogleAsync();
     }
 }

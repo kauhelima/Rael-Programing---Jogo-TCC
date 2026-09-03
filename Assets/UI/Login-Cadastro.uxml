@@ -8,11 +8,16 @@
             <ui:VisualElement name="VisualElement" class="font-panel">
                 <ui:Label text="Login" display-tooltip-when-elided="true" style="-unity-text-align: upper-center;" />
             </ui:VisualElement>
-            <ui:VisualElement name="Painel" class="panel">
-                <ui:TextField picking-mode="Ignore" label="Prontuario" value="filler text" text="BI3427028" name="prontuarioTextField" />
-                <ui:TextField picking-mode="Ignore" label="Senha" value="filler text" text="filler text" password="true" name="passwordTextField" />
-                <ui:Button text="Login" display-tooltip-when-elided="true" name="loginButton" class="main-button" />
-                <ui:Button text="Register" display-tooltip-when-elided="true" name="registerButton" class="secondary-button" />
+            <ui:VisualElement name="Painel" class="panel" style="width: 100%; height: 75%; border-bottom-width: 0; border-bottom-right-radius: 17px; border-bottom-left-radius: 17px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                <ui:VisualElement name="areaCadastro" style="width: 100%; height: 80%; align-items: stretch; justify-content: center;">
+                    <ui:TextField picking-mode="Ignore" label="Prontuario" value="filler text" text="BI3427028" name="prontuarioTextField" style="width: auto; height: auto;" />
+                    <ui:TextField picking-mode="Ignore" label="Senha" value="filler text" text="filler text" password="true" name="passwordTextField" />
+                </ui:VisualElement>
+                <ui:VisualElement name="areaButton" style="height: auto; align-items: center;">
+                    <ui:Button text="Login" display-tooltip-when-elided="true" name="loginButton" class="main-button" style="width: 50%; height: 30%;" />
+                    <ui:Button text="Register" display-tooltip-when-elided="true" name="registerButton" class="secondary-button" style="width: 50%; height: 30%;" />
+                    <ui:Button text="Entrar Com o Google" display-tooltip-when-elided="true" name="googleButton" style="width: 50%; height: 30%;" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

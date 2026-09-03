@@ -36,6 +36,7 @@
     width: auto;
     height: auto;
 }
+
 .main-button:active {
     background-color: rgb(253, 95, 75);
 }
@@ -47,12 +48,13 @@ Button:hover {
 .secondary-button {
     height: auto;
     width: auto;
-    -unity-text-align: upper-center;
+    -unity-text-align: middle-center;
     -unity-slice-left: 5;
     -unity-slice-top: 5;
     -unity-slice-right: 5;
     -unity-slice-bottom: 5;
 }
+
 .secondary-button:active {
     background-color: rgb(75, 255, 95);
 }
