@@ -1,21 +1,34 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class Login_UI : MonoBehaviour
 {
-    [SerializeField]
-    private UIDocument uIDocument;
+    [SerializeField] private UIDocument uIDocument;
+
+    [SerializeField] private GameObject loginUI;
+
+    [SerializeField] private GameObject gameRoot;
 
     private Button loginButton;
     private Button registerButton;
     private Button googleButton;
     private TextField userNameField;
     private TextField passwordField;
+    private void OnEnable()
+    {
+        // Escuta quando o login der certo
+        AuthenticationManager.OnLoginSuccess += GoToGame;
+    }
 
+    private void OnDisable()
+    {
+        AuthenticationManager.OnLoginSuccess -= GoToGame;
+    }
     private void Awake()
     {
         var root = uIDocument.rootVisualElement;
@@ -52,10 +65,36 @@ public class Login_UI : MonoBehaviour
     {
         if (AuthenticationManager.Instance == null)
         {
-            Debug.LogError("AuthenticationManager n�o encontrado na cena!");
+            Debug.LogError("AuthenticationManager não encontrado na cena!");
             return;
         }
 
         await AuthenticationManager.Instance.LoginWithGoogleAsync();
+    }
+    private void GoToGame()
+    {
+        Debug.Log("Login bem-sucedido! Entrando no jogo...");
+
+        // Esconde a UI de login
+        if (loginUI != null)
+            loginUI.SetActive(false);
+
+        // Mostra o jogo
+        if (gameRoot != null)
+            gameRoot.SetActive(true);
+
+        // === RESET DO PERSONAGEM ===
+        PlayerControll player = FindObjectOfType<PlayerControll>();
+        if (player != null)
+        {
+            player.ResetPlayer();
+        }
+
+        // Garante que o GameController está no estado correto
+        GameController gameController = FindObjectOfType<GameController>();
+        if (gameController != null)
+        {
+            gameController.SetGameState(GameState.FreeRoam);
+        }
     }
 }

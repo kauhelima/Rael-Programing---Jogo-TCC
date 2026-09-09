@@ -66,6 +66,20 @@ public class PlayerControll : MonoBehaviour
         }
     }
 
+    public void ResetPlayer()
+    {
+        isMoving = false;
+        input = Vector2.zero;
+
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", false);
+            animator.SetFloat("MoveX", 0);
+            animator.SetFloat("MoveY", 0);
+        }
+
+        StopAllCoroutines(); // para qualquer movimento que estiver acontecendo
+    }
     IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;

@@ -33,20 +33,38 @@ public class NPCController : MonoBehaviour, Interacao
 
     private void TurnToPlayer()
     {
-        if (playerTransform == null) return;
+        // Se não tiver a referência do player, tenta encontrar
+        if (playerTransform == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+                playerTransform = playerObj.transform;
+        }
 
-        var diff = playerTransform.position - transform.position;
+        if (playerTransform == null || animator == null)
+        {
+            Debug.LogWarning("Não foi possível virar o NPC: playerTransform ou animator está null");
+            return;
+        }
 
+        Vector2 diff = playerTransform.position - transform.position;
+
+        // Decide a direção principal
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
+            // Olha para a esquerda ou direita
             animator.SetFloat("moveX", diff.x > 0 ? 1f : -1f);
             animator.SetFloat("moveY", 0f);
         }
         else
         {
+            // Olha para cima ou para baixo
             animator.SetFloat("moveX", 0f);
             animator.SetFloat("moveY", diff.y > 0 ? 1f : -1f);
         }
+
+        // Força atualização imediata (ajuda em alguns casos)
+        animator.Update(0f);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

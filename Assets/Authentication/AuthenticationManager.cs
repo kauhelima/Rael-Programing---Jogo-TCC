@@ -4,10 +4,13 @@ using Unity.Services.Authentication;
 using Unity.Services.Authentication.PlayerAccounts;
 using Unity.Services.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AuthenticationManager : MonoBehaviour
 {
-    public static AuthenticationManager Instance {  get; private set; }
+    public static AuthenticationManager Instance { get; private set; }
+
+    public static event Action OnLoginSuccess;
 
     private bool isInitialized = false;
     private void Awake()
@@ -85,6 +88,8 @@ public class AuthenticationManager : MonoBehaviour
         try
         {
             await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
+
+            OnLoginSuccess?.Invoke();
         }
         catch (AuthenticationException e)
         {
@@ -141,6 +146,8 @@ public class AuthenticationManager : MonoBehaviour
 
             Debug.Log("Login com Google realizado com sucesso!");
             Debug.Log($"Player ID: {AuthenticationService.Instance.PlayerId}");
+
+            OnLoginSuccess?.Invoke();
         }
         catch (Exception e)
         {
