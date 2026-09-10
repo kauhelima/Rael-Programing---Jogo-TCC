@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class NPCController : MonoBehaviour, Interacao
 {
@@ -11,7 +11,7 @@ public class NPCController : MonoBehaviour, Interacao
     private void Awake()
     {
         if (dialog == null)
-            Debug.LogError("Dialog não foi atribuído para o NPC: " + gameObject.name);
+            Debug.LogError("Dialog nÃ£o foi atribuÃ­do para o NPC: " + gameObject.name);
     }
 
     private void Update()
@@ -24,47 +24,54 @@ public class NPCController : MonoBehaviour, Interacao
 
     public void Interact()
     {
+
+        if (playerTransform == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+            if (playerObj != null)
+            {
+                playerTransform = playerObj.transform;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        if (animator == null)
+        {
+            return;
+        }
+
+        TurnToPlayer();
+
         if (dialog != null)
         {
-            TurnToPlayer();
             StartCoroutine(DialogManager.Instance.ShowDialog(dialog));
         }
     }
 
     private void TurnToPlayer()
     {
-        // Se não tiver a referência do player, tenta encontrar
-        if (playerTransform == null)
-        {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-                playerTransform = playerObj.transform;
-        }
-
-        if (playerTransform == null || animator == null)
-        {
-            Debug.LogWarning("Não foi possível virar o NPC: playerTransform ou animator está null");
-            return;
-        }
 
         Vector2 diff = playerTransform.position - transform.position;
 
-        // Decide a direção principal
+        float moveX = 0f;
+        float moveY = 0f;
+
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
-            // Olha para a esquerda ou direita
-            animator.SetFloat("moveX", diff.x > 0 ? 1f : -1f);
-            animator.SetFloat("moveY", 0f);
+            moveX = diff.x > 0 ? 1f : -1f;
         }
         else
         {
-            // Olha para cima ou para baixo
-            animator.SetFloat("moveX", 0f);
-            animator.SetFloat("moveY", diff.y > 0 ? 1f : -1f);
+            moveY = diff.y > 0 ? 1f : -1f;
         }
 
-        // Força atualização imediata (ajuda em alguns casos)
-        animator.Update(0f);
+        animator.SetFloat("moveX", moveX);
+        animator.SetFloat("moveY", moveY);
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
