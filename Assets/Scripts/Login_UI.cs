@@ -17,8 +17,19 @@ public class Login_UI : MonoBehaviour
     private Button loginButton;
     private Button registerButton;
     private Button googleButton;
+    private Button cadastrarButton;         // botão "Cadastrar" da tela de Cadastro
+    private Button voltarLoginButton;       // botão "Voltar - Login"
+
     private TextField userNameField;
     private TextField passwordField;
+
+    private TextField cadastroNomeField;
+    private TextField cadastroEmailField;
+    private TextField cadastroSenhaField;
+
+    private VisualElement loginPanel;
+    private VisualElement cadastroPanel;
+
     private void OnEnable()
     {
         // Escuta quando o login der certo
@@ -32,23 +43,57 @@ public class Login_UI : MonoBehaviour
     private void Awake()
     {
         var root = uIDocument.rootVisualElement;
+
+        loginPanel = root.Q<VisualElement>("Login");
+        cadastroPanel = root.Q<VisualElement>("Cadastro");
+
         loginButton = root.Q<Button>("loginButton");
         registerButton = root.Q<Button>("registerButton");
-        userNameField = root.Q<TextField>("prontuarioTextField");
+        userNameField = root.Q<TextField>("nomeTextField");
         passwordField = root.Q<TextField>("passwordTextField");
         googleButton = root.Q<Button>("googleButton");
 
-        loginButton.clicked += LoginButtonClick;
-        registerButton.clicked += RegisterButtonClick;
+        cadastroNomeField = root.Q<TextField>("cadastroNome");
+        cadastroEmailField = root.Q<TextField>("cadastroEmail");
+        cadastroSenhaField = root.Q<TextField>("cadastroSenha");
+
+        // Botões da tela de Cadastro
+        cadastrarButton = root.Q<Button>("cadastrarButton");   // botão "Cadastrar"
+        voltarLoginButton = root.Q<Button>("backButton"); // botão "Voltar - Login"
+
+        // Eventos
+        if (loginButton != null)
+            loginButton.clicked += LoginButtonClick;
+
+        if (registerButton != null)
+            registerButton.clicked += ShowCadastroPanel;
+
         if (googleButton != null)
             googleButton.clicked += GoogleButtonClick;
-}
 
+        if (cadastrarButton != null)
+            cadastrarButton.clicked += RegisterButtonClick;
+
+        if (voltarLoginButton != null)
+            voltarLoginButton.clicked += ShowLoginPanel;
+    }
+
+    private void ShowCadastroPanel()
+    {
+        loginPanel.style.display = DisplayStyle.None;
+        cadastroPanel.style.display = DisplayStyle.Flex;
+    }
+
+    private void ShowLoginPanel()
+    {
+        cadastroPanel.style.display = DisplayStyle.None;
+        loginPanel.style.display = DisplayStyle.Flex;
+    }
     private async void RegisterButtonClick()
     {
         var errorText = await AuthenticationManager.Instance.RegisterWithUsernamePasswordAsync(
-            userNameField.value,
-            passwordField.value
+            cadastroNomeField.value,
+            cadastroSenhaField.value
         );
         Debug.Log(errorText);
     }
